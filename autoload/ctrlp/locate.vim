@@ -26,9 +26,9 @@ function! ctrlp#locate#init()
     return
   endif
   let ans = input('search: ')
-  let cmd = 'locate -r ' . substitute(ans ," ", "*", "g")
+  let cmd = 'locate -r "' . substitute(ans ," ", ".*", "g") . '"'
   if ans[0] != '.'
-    let cmd .= ' | grep -v "/.+" ' "do not search directories name of which starts with dot
+    let cmd .= ' | egrep -v "/\.+" ' "omit directories name of which starts with dot
   endif
   let pathes = split(system(cmd),"\n")
   return pathes
