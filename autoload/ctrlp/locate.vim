@@ -26,7 +26,8 @@ function! ctrlp#locate#init()
     return
   endif
   let ans = input('search: ')
-  let cmd = 'locate -r "' . substitute(ans ," ", ".*", "g") . '"'
+  let pwd = getcwd()
+  let cmd = 'locate -w -r "' . pwd . '.*' . substitute(ans ," ", ".*", "g") . '"'
   if ans[0] != '.'
     let cmd .= ' | egrep -v "/\.+" ' "omit directories name of which starts with dot
   endif
