@@ -31,6 +31,8 @@ function! ctrlp#locate#init()
   if ans[0] != '.'
     let cmd .= ' | egrep -v "/\.+" ' "omit directories name of which starts with dot
   endif
+  echo ' '
+  echomsg 'wait a moment...: [cmd: ' . cmd . ']'
   let pathes = split(system(cmd),"\n")
   return pathes
 endfunc
