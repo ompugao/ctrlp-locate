@@ -19,7 +19,7 @@ NeoBundle 'ompugao/ctrlp-locate'
 ````
 >>> test
 ````
-- then, press <c-d>
+- then, press \<Ctrl-d\>
 ````
 > /boot/grub/x86_64-efi/setjmp_test.mod
 > /boot/grub/x86_64-efi/pbkdf2_test.mod
