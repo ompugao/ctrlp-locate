@@ -38,6 +38,6 @@ NeoBundle 'ompugao/ctrlp-locate'
 
 - do not set g:ctrlp_key_loop to 1. It does not work somehomw.
 ````
-let g:ctrlp_key_loop=1
+let g:ctrlp_key_loop=0
 ````
 
