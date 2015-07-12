@@ -49,7 +49,7 @@ function! s:GetFunc(fname, funcname)
   return function("<SNR>".sid."_".a:funcname)
 endfunction
 
-function! s:op_menu()
+function! s:trigger_locate()
   let CtrlPGetInput = s:GetFunc('ctrlp.vim', 'getinput')
   let keyinput = CtrlPGetInput()
   call ctrlp#exit()
@@ -59,7 +59,7 @@ function! s:op_menu()
 endfunction
 
 function! ctrlp#locate#init(...)
-  nnoremap <buffer> <c-d> :call <SID>op_menu()<cr>
+  nnoremap <buffer> <c-d> :call <SID>trigger_locate()<cr>
   if !executable("locate")
     echo 'locate command is not on your path.'
     call ctrlp#exit()
