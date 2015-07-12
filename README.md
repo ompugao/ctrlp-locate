@@ -37,6 +37,11 @@ NeoBundle 'ompugao/ctrlp-locate'
 ## Gif
 ![](https://raw.githubusercontent.com/wiki/ompugao/ctrlp-locate/imgs/ctrlp-locate.gif)
 
+# Configuration
+- *g:ctrlp_locate_max_candidates* : set the maximum number of files you search. for example:
+````
+let g:ctrlp_locate_max_candidates=30
+````
 # Bugs(?)
 
 - do not set g:ctrlp_key_loop to 1. It does not work somehomw.
