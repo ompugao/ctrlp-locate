@@ -1,5 +1,5 @@
 # ctrlp-locate
-execute locate command via ctrlp.vim interface.
+locate and open it via ctrlp.vim!
 
 # Installation
 - use your favorite method.
