@@ -26,6 +26,7 @@ function! s:set_global_variable(key, default)
 endfunction
 
 call s:set_global_variable('ctrlp_locate_max_candidates', 0)
+call s:set_global_variable('ctrlp_locate_ignore_startswithdot', 0)
 
 let s:ctrlp_locate_input_query = ""
 
@@ -77,7 +78,7 @@ function! s:locate_command(input_query)
     let locate_command = 'locate -w'
           \ . (g:ctrlp_locate_max_candidates!=0 ? ' -l '.g:ctrlp_locate_max_candidates : '')
           \ . (s:is_linux() ? ' -e' : ''). ' -r "' . input_query_regex . '"'
-          \ . (a:input_query[0]!='.' ? ' | egrep -v "/\.+" ' : '') "omit directories whose name starts with dot
+          \ . (g:ctrlp_locate_ignore_startswithdot && a:input_query[0]!='.' ? ' | egrep -v "/\.+" ' : '') "omit directories whose name starts with dot
   elseif executable('es')
     let locate_command = 'es -i -r'
           \ . (g:ctrlp_locate_max_candidates!=0 ? ' -n '.g:ctrlp_locate_max_candidates : '')
