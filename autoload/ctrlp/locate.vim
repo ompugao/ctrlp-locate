@@ -27,7 +27,7 @@ endfunction
 
 call s:set_global_variable('ctrlp_locate_max_candidates', 0)
 
-let s:ctrlp_locate_input_pattern = ""
+let s:ctrlp_locate_input_query = ""
 
 " quoted from:
 " Big Sky :: vimでスクリプト内関数を書き換える http://mattn.kaoriya.net/software/vim/20090826003359.htm
@@ -54,34 +54,55 @@ function! s:trigger_locate()
   let keyinput = CtrlPGetInput()
   call ctrlp#exit()
   redraw
-  let s:ctrlp_locate_input_pattern = keyinput
+  let s:ctrlp_locate_input_query = keyinput
   call ctrlp#init(ctrlp#locate#id())
+endfunction
+
+" quoted from [unite-locate](https://github.com/ujihisa/unite-locate)
+" If the locate command is linux version, use -e option which means fetching
+" only existing files.
+function! s:is_linux()
+  " Linux version only has -V option
+  call system('locate -V')
+  return !v:shell_error
+endfunction
+
+function! s:locate_command(input_query)
+  let locate_command = ''
+  if has('mac')
+    let locate_command = 'mdfind -name "' . a:input_query . '"'
+          \ . (g:ctrlp_locate_max_candidates!=0 ? ' | head -n ' . g:ctrlp_locate_max_candidates : '')
+  elseif executable('locate')
+    let input_query_regex = substitute(a:input_query," ", ".*", "g")
+    let locate_command = 'locate -w'
+          \ . (g:ctrlp_locate_max_candidates!=0 ? ' -l '.g:ctrlp_locate_max_candidates : '')
+          \ . (s:is_linux() ? ' -e' : ''). ' -r "' . input_query_regex . '"'
+          \ . (a:input_query[0]!='.' ? ' | egrep -v "/\.+" ' : '') "omit directories whose name starts with dot
+  elseif executable('es')
+    let locate_command = 'es -i -r'
+          \ . (g:ctrlp_locate_max_candidates!=0 ? ' -n '.g:ctrlp_locate_max_candidates : '')
+          \ . ' ' . a:input_query
+  endif
+  return locate_command
 endfunction
 
 function! ctrlp#locate#init(...)
   nnoremap <buffer> <c-d> :call <SID>trigger_locate()<cr>
-  if !executable("locate")
-    echo 'locate command is not on your path.'
-    call ctrlp#exit()
-    return
-  endif
   "call ctrlp#init(ctrlp#locate#id())
-  let input_pattern = get(s:,'ctrlp_locate_input_pattern','')
-  if input_pattern == ""
+  let input_query = get(s:,'ctrlp_locate_input_query','')
+  if input_query == ""
     return []
   endif
-  let cmd = 'locate'
-  if g:ctrlp_locate_max_candidates != 0
-    let cmd .= ' -l ' . g:ctrlp_locate_max_candidates
-  endif
-  let cmd .= ' -w -r "' . substitute(input_pattern," ", ".*", "g") . '"'
-  if input_pattern[0] != '.'
-    let cmd .= ' | egrep -v "/\.+" ' "omit directories whose name starts with dot
+  let cmd = s:locate_command(input_query)
+  if cmd==""
+    echo 'Sorry, I cannot generate any command.'
+    call ctrlp#exit()
+    return
   endif
   echomsg 'wait a moment...: [cmd: ' . cmd . ']'
   let paths = split(system(cmd),"\n")
   return paths
-endfunc
+endfunction
 
 function! ctrlp#locate#accept(mode, str)
   call ctrlp#exit()
@@ -89,7 +110,7 @@ function! ctrlp#locate#accept(mode, str)
 endfunction
 
 function! ctrlp#locate#exit()
-  unlet! s:ctrlp_locate_input_pattern
+  unlet! s:ctrlp_locate_input_query
 endfunction
 
 let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
