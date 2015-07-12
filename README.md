@@ -49,3 +49,5 @@ let g:ctrlp_locate_max_candidates=30
 let g:ctrlp_key_loop=0
 ````
 
+# LICENSE
+MIT
