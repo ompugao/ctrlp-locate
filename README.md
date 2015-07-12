@@ -34,6 +34,9 @@ NeoBundle 'ompugao/ctrlp-locate'
 ````
 - Yes! select whatever you want to open!
   
+## Gif
+![](https://raw.githubusercontent.com/wiki/ompugao/ctrlp-locate/imgs/ctrlp-locate.gif)
+
 # Bugs(?)
 
 - do not set g:ctrlp_key_loop to 1. It does not work somehomw.
