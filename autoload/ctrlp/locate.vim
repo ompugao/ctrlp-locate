@@ -27,7 +27,7 @@ endfunction
 
 call s:set_global_variable('ctrlp_locate_max_candidates', 0)
 
-let g:ctrlp_locate_input_pattern = ""
+let s:ctrlp_locate_input_pattern = ""
 
 " quoted from:
 " Big Sky :: vimでスクリプト内関数を書き換える http://mattn.kaoriya.net/software/vim/20090826003359.htm
@@ -54,7 +54,7 @@ function! s:trigger_locate()
   let keyinput = CtrlPGetInput()
   call ctrlp#exit()
   redraw
-  let g:ctrlp_locate_input_pattern = keyinput
+  let s:ctrlp_locate_input_pattern = keyinput
   call ctrlp#init(ctrlp#locate#id())
 endfunction
 
@@ -66,7 +66,7 @@ function! ctrlp#locate#init(...)
     return
   endif
   "call ctrlp#init(ctrlp#locate#id())
-  let input_pattern = get(g:,'ctrlp_locate_input_pattern','')
+  let input_pattern = get(s:,'ctrlp_locate_input_pattern','')
   if input_pattern == ""
     return []
   endif
@@ -89,7 +89,7 @@ function! ctrlp#locate#accept(mode, str)
 endfunction
 
 function! ctrlp#locate#exit()
-  unlet! g:ctrlp_locate_input_pattern
+  unlet! s:ctrlp_locate_input_pattern
 endfunction
 
 let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
