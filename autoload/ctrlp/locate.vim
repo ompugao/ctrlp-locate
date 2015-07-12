@@ -66,8 +66,7 @@ function! ctrlp#locate#init(...)
     return
   endif
   "call ctrlp#init(ctrlp#locate#id())
-
-  let input_pattern = g:ctrlp_locate_input_pattern
+  let input_pattern = get(g:,'ctrlp_locate_input_pattern','')
   if input_pattern == ""
     return []
   endif
@@ -90,7 +89,7 @@ function! ctrlp#locate#accept(mode, str)
 endfunction
 
 function! ctrlp#locate#exit()
-  let g:ctrlp_locate_input_pattern = ''
+  unlet! g:ctrlp_locate_input_pattern
 endfunction
 
 let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
