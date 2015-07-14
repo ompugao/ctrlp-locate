@@ -50,9 +50,10 @@ function! s:GetFunc(fname, funcname)
   return function("<SNR>".sid."_".a:funcname)
 endfunction
 
+let s:CtrlPGetInput = s:GetFunc('ctrlp.vim', 'getinput')
+
 function! s:trigger_locate()
-  let CtrlPGetInput = s:GetFunc('ctrlp.vim', 'getinput')
-  let keyinput = CtrlPGetInput()
+  let keyinput = s:CtrlPGetInput()
   call ctrlp#exit()
   redraw
   let s:ctrlp_locate_input_query = keyinput
