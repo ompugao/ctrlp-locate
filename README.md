@@ -19,7 +19,7 @@ NeoBundle 'ompugao/ctrlp-locate'
 ````
 >>> test
 ````
-- then, press \<Ctrl-d\>
+- then, press \<Ctrl-y\>
 ````
 > /boot/grub/x86_64-efi/setjmp_test.mod
 > /boot/grub/x86_64-efi/pbkdf2_test.mod
@@ -38,10 +38,8 @@ NeoBundle 'ompugao/ctrlp-locate'
 ![](https://raw.githubusercontent.com/wiki/ompugao/ctrlp-locate/imgs/ctrlp-locate.gif)
 
 # Configuration
-- *g:ctrlp_locate_max_candidates* : set the maximum number of files you search. for example:
-````
-let g:ctrlp_locate_max_candidates=30
-````
+- see doc/ctrlp-locate.txt 
+
 # Bugs(?)
 
 - do not set g:ctrlp_key_loop to 1. It does not work somehomw.

@@ -23,16 +23,27 @@ CONFIGURATION					*ctrlp-locate-configuration*
 
 g:ctrlp_locate_max_candidates			*g:ctrlp_locate_max_candidates*
 	Specifies the maximum number of files you search.
-    If you set it to 0, this plugin makes a list of all matched files.
-    default: 0
+	If you set it to 0, this plugin makes a list of all matched files.
+	default: 0
 
 g:ctrlp_locate_ignore_startswithdot		*g:ctrlp_locate_ignore_startswithdot*
 	Filter files and directories whose name start with dot if you set it to 1.
-    For example, if you are using neocomplcache/neocomplete, that completion 
-    plugin will create lots of cache files under $HOME/.neocomplcache or 
-    $HOME/.cache/neocomplete/ and the result of locate command contains those 
-    cache files. You can ignore those files using this option in these cases.
-    NOTE: it works only on linux now.
+	For example, if you are using neocomplcache/neocomplete, that completion 
+	plugin will create lots of cache files under $HOME/.neocomplcache or 
+	$HOME/.cache/neocomplete/ and the result of locate command contains those 
+	cache files. You can ignore those files using this option in these cases.
+	NOTE: it works only on linux now.
+
+g:ctrlp_locate_keymap_trigger_command		*g:ctrlp_locate_keymap_trigger_command*
+	Map the key sequence for triggering locate command.
+        default: "<c-y>"
+
+==============================================================================
+FAQ							*ctrlp-locate-faq*
+
+- do not set g:ctrlp_key_loop to 1. It does not work somehow. always set it to
+  0.
+    let g:ctrlp_key_loop=0
 
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
