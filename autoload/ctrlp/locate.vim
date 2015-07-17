@@ -27,6 +27,7 @@ endfunction
 
 call s:set_global_variable('ctrlp_locate_max_candidates', 0)
 call s:set_global_variable('ctrlp_locate_ignore_startswithdot', 0)
+call s:set_global_variable('ctrlp_locate_keymap_trigger_command', '<c-y>')
 
 let s:ctrlp_locate_input_query = ""
 
@@ -89,7 +90,7 @@ function! s:locate_command(input_query)
 endfunction
 
 function! ctrlp#locate#init(...)
-  nnoremap <buffer> <c-d> :call <SID>trigger_locate()<cr>
+  exe 'nnoremap <buffer> ' . g:ctrlp_locate_keymap_trigger_command . ' :call <SID>trigger_locate()<cr>'
   "call ctrlp#init(ctrlp#locate#id())
   let input_query = get(s:,'ctrlp_locate_input_query','')
   if input_query == ""
