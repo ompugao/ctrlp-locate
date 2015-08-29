@@ -3,6 +3,8 @@ if exists('g:loaded_ctrlp_locate') && g:loaded_ctrlp_locate
 endif
 let g:loaded_ctrlp_locate = 1
 
+let s:prelude = vital#of('ctrlp_locate').import('Prelude')
+
 let s:locate_var = {
 \ 'init'   : 'ctrlp#locate#init()',
 \ 'exit'   : 'ctrlp#locate#exit()',
@@ -72,7 +74,7 @@ endfunction
 
 function! s:locate_command(input_query)
   let locate_command = ''
-  if has('mac')
+  if s:prelude.is_mac()
     let locate_command = 'mdfind -name "' . a:input_query . '"'
           \ . (g:ctrlp_locate_max_candidates!=0 ? ' | head -n ' . g:ctrlp_locate_max_candidates : '')
   elseif executable('locate')
