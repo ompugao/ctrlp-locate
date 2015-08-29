@@ -3,7 +3,10 @@ if exists('g:loaded_ctrlp_locate') && g:loaded_ctrlp_locate
 endif
 let g:loaded_ctrlp_locate = 1
 
-let s:prelude = vital#of('ctrlp_locate').import('Prelude')
+let s:V = vital#of('ctrlp_locate')
+let s:Prelude = s:V.import('Prelude')
+let s:DataString = s:V.import('Data.String')
+let s:Process = s:V.import('Process')
 
 let s:locate_var = {
 \ 'init'   : 'ctrlp#locate#init()',
@@ -62,8 +65,8 @@ endfunction
 " only existing files.
 function! s:is_linux()
   " Linux version only has -V option
-  call system('locate -V')
-  return !v:shell_error
+  call s:Process.system('locate -V')
+  return !s:Process.get_last_status()
 endfunction
 
 function! s:locate_command(input_query)
@@ -99,7 +102,7 @@ function! ctrlp#locate#init(...)
     return
   endif
   echomsg 'wait a moment...: [cmd: ' . cmd . ']'
-  let paths = split(system(cmd),"\n")
+  let paths = split(s:Process.system(cmd),"\n")
   return paths
 endfunction
 
