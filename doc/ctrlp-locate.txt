@@ -7,7 +7,7 @@ Licence: MIT
 INTRODUCTION					*ctrlp-locate-introduction*
 
 *ctrlp-locate* is a ctrlp.vim plugin to find/open files easily, using locate
-command.
+command, inspired by [unite-locate](https://github.com/ujihisa/unite-locate].
 
 Requirement:
 - ctrlp.vim
@@ -26,13 +26,10 @@ g:ctrlp_locate_max_candidates			*g:ctrlp_locate_max_candidates*
 	If you set it to 0, this plugin makes a list of all matched files.
 	default: 0
 
-g:ctrlp_locate_ignore_startswithdot		*g:ctrlp_locate_ignore_startswithdot*
-	Filter files and directories whose name start with dot if you set it to 1.
-	For example, if you are using neocomplcache/neocomplete, that completion 
-	plugin will create lots of cache files under $HOME/.neocomplcache or 
-	$HOME/.cache/neocomplete/ and the result of locate command contains those 
-	cache files. You can ignore those files using this option in these cases.
-	NOTE: it works only on linux now.
+g:ctrlp_locate_command_definition		*g:ctrlp_locate_command_definition*
+	Define locate command on your own.
+        You can use '{query}' and '{max_candidates}', the former one will be substituted
+        by query string, and the latter one by g:ctrlp_locate_max_candidates.
 
 g:ctrlp_locate_keymap_trigger_command		*g:ctrlp_locate_keymap_trigger_command*
 	Map the key sequence for triggering locate command.
