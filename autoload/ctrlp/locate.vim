@@ -21,15 +21,9 @@ else
   let g:ctrlp_ext_vars = [s:locate_var]
 endif
 
-function! s:set_global_variable(key, default)
-  if !has_key(g:, a:key)
-    let g:[a:key] = a:default
-  endif
-endfunction
-
-call s:set_global_variable('ctrlp_locate_max_candidates', 0)
-call s:set_global_variable('ctrlp_locate_ignore_startswithdot', 0)
-call s:set_global_variable('ctrlp_locate_keymap_trigger_command', '<c-y>')
+let g:ctrlp_locate_max_candidates = get(g:, 'ctrlp_locate_max_candidates', 0)
+let g:ctrlp_locate_ignore_startswithdot = get(g:,'ctrlp_locate_ignore_startswithdot', 0)
+let g:ctrlp_locate_keymap_trigger_command = get(g:,'ctrlp_locate_keymap_trigger_command', '<c-y>')
 
 let s:ctrlp_locate_input_query = ""
 
