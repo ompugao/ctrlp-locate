@@ -1,0 +1,22 @@
+"script_name": ctrlp-locate
+"script_id": "5221"
+"script_type": utility
+"script_package": "{script_name}-{version}.zip"
+"required_vim_version": '7.3'
+"summary": locate and open it via ctrlp.vim!
+"detailed_description": |
+  execute 'locate' command and open files via ctrlp.vim (https://github.com/ctrlpvim/ctrlp.vim).
+  inspired by unite-locate (https://github.com/ujihisa/unite-locate)
+
+  https://github.com/ompugao/ctrlp-locate
+
+  Dependency: locate command, es command, or mdfind command
+"install_details": |
+    install https://github.com/ctrlpvim/ctrlp.vim first
+"versions":
+  - '0.5': add g:ctrlp_locate_command_definition, use vital modules
+  - '0.4': bugfix
+  - '0.3': work on mac/windows
+  - '0.2': tiny updates
+  - '0.1': Initial upload
+# vim: filetype=yaml
