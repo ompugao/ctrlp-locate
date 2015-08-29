@@ -25,7 +25,6 @@ else
 endif
 
 let g:ctrlp_locate_max_candidates = get(g:, 'ctrlp_locate_max_candidates', 0)
-let g:ctrlp_locate_ignore_startswithdot = get(g:,'ctrlp_locate_ignore_startswithdot', 0)
 let g:ctrlp_locate_keymap_trigger_command = get(g:,'ctrlp_locate_keymap_trigger_command', '<c-y>')
 
 let s:ctrlp_locate_input_query = ""
@@ -69,23 +68,30 @@ function! s:is_linux()
   return !s:Process.get_last_status()
 endfunction
 
-function! s:locate_command(input_query)
-  let locate_command = ''
-  if s:prelude.is_mac()
-    let locate_command = 'mdfind -name "' . a:input_query . '"'
-          \ . (g:ctrlp_locate_max_candidates!=0 ? ' | head -n ' . g:ctrlp_locate_max_candidates : '')
+function! s:generate_locate_command(input_query)
+  let cmd = ''
+  let query = a:input_query
+  let limit_num_result = g:ctrlp_locate_max_candidates!=0
+
+  if has_key(g:, 'ctrlp_locate_command_definition')
+    let cmd = g:ctrlp_locate_command_definition
+  elseif s:Prelude.is_mac()
+    let cmd = 'mdfind -name "{query}"' . (limit_num_result? ' | head -n {max_candidates}': '')
   elseif executable('locate')
-    let input_query_regex = substitute(a:input_query," ", ".*", "g")
-    let locate_command = 'locate -w'
-          \ . (g:ctrlp_locate_max_candidates!=0 ? ' -l '.g:ctrlp_locate_max_candidates : '')
-          \ . (s:is_linux() ? ' -e' : ''). ' -r "' . input_query_regex . '"'
-          \ . (g:ctrlp_locate_ignore_startswithdot && a:input_query[0]!='.' ? ' | egrep -v "/\.+" ' : '') "omit directories whose name starts with dot
+    let cmd = 'locate -w' 
+          \ . (limit_num_result? ' -l {max_candidates}' : '')
+          \ . (s:is_linux() ? ' -e' : '')
+          \ . ' -r "{query}"'
+    let query = s:DataString.replace(a:input_query," ", ".*")
   elseif executable('es')
-    let locate_command = 'es -i -r'
-          \ . (g:ctrlp_locate_max_candidates!=0 ? ' -n '.g:ctrlp_locate_max_candidates : '')
-          \ . ' ' . a:input_query
+    let cmd = 'es -i -r'
+          \ . (limit_num_result ? ' -n {max_candidates}' : '')
+          \ . ' {query}'
   endif
-  return locate_command
+
+  let cmd = s:DataString.replace(cmd,'{query}', query)
+  let cmd = s:DataString.replace(cmd,'{max_candidates}', g:ctrlp_locate_max_candidates)
+  return cmd
 endfunction
 
 function! ctrlp#locate#init(...)
@@ -95,7 +101,7 @@ function! ctrlp#locate#init(...)
   if input_query == ""
     return []
   endif
-  let cmd = s:locate_command(input_query)
+  let cmd = s:generate_locate_command(input_query)
   if cmd==""
     echo 'Sorry, I cannot generate any command.'
     call ctrlp#exit()
