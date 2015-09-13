@@ -80,6 +80,9 @@ function! ctrlp#locate#init(...)
 endfunction
 
 function! ctrlp#locate#matcher(items, input, limit, mmode, ispath, crfile, regex)
+  if len(a:input) <= g:ctrlp_locate_min_chars
+    return []
+  endif
   let cmd = s:generate_locate_command(a:input, a:regex)
   let paths = split(s:Process.system(cmd),"\n")
   return paths
