@@ -38,9 +38,9 @@ g:ctrlp_locate_keymap_trigger_command		*g:ctrlp_locate_keymap_trigger_command*
 ==============================================================================
 FAQ							*ctrlp-locate-faq*
 
-- do not set g:ctrlp_key_loop to 1. It does not work somehow. always set it to
-  0.
-    let g:ctrlp_key_loop=0
+- Can not input multi-byte strings!
+	ctrlp-locate set g:ctrlp_key_loop to 0 automatically. you cannot input
+        multi-byte strings.
 
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

@@ -40,12 +40,8 @@ NeoBundle 'ompugao/ctrlp-locate'
 # Configuration
 - see doc/ctrlp-locate.txt 
 
-# Bugs(?)
-
-- do not set g:ctrlp_key_loop to 1. It does not work somehomw.
-````
-let g:ctrlp_key_loop=0
-````
+# Notice
+- ctrlp-locate set g:ctrlp_key_loop to 0 automatically. you cannot input multi-byte strings.
 
 # LICENSE
 MIT
