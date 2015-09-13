@@ -25,39 +25,8 @@ else
 endif
 
 let g:ctrlp_locate_max_candidates = get(g:, 'ctrlp_locate_max_candidates', 0)
-let g:ctrlp_locate_keymap_trigger_command = get(g:,'ctrlp_locate_keymap_trigger_command', '<c-y>')
-
-let s:ctrlp_locate_input_query = ""
-
-" quoted from:
-" Big Sky :: vimでスクリプト内関数を書き換える http://mattn.kaoriya.net/software/vim/20090826003359.htm
-function! s:GetScriptID(fname)
-  let snlist = ''
-  redir => snlist
-  silent! scriptnames
-  redir END
-  let smap = {}
-  let mx = '^\s*\(\d\+\):\s*\(.*\)$'
-  for line in split(snlist, "\n")
-    let smap[fnamemodify(tolower(substitute(line, mx, '\2', '')), ":p:t")] = substitute(line, mx, '\1', '')
-  endfor
-  return smap[tolower(a:fname)]
-endfunction
-
-function! s:GetFunc(fname, funcname)
-  let sid = s:GetScriptID(a:fname)
-  return function("<SNR>".sid."_".a:funcname)
-endfunction
-
-let s:CtrlPGetInput = s:GetFunc('ctrlp.vim', 'getinput')
-
-function! s:trigger_locate()
-  let keyinput = s:CtrlPGetInput()
-  call ctrlp#exit()
-  redraw
-  let s:ctrlp_locate_input_query = keyinput
-  call ctrlp#init(ctrlp#locate#id())
-endfunction
+let g:ctrlp_locate_lazy_update = get(g:, 'ctrlp_locate_lazy_update', 500)
+let g:ctrlp_locate_min_chars = get(g:, 'ctrlp_locate_min_chars', 5)
 
 " quoted from [unite-locate](https://github.com/ujihisa/unite-locate)
 " If the locate command is linux version, use -e option which means fetching
@@ -68,7 +37,7 @@ function! s:is_linux()
   return !s:Process.get_last_status()
 endfunction
 
-function! s:generate_locate_command(input_query)
+function! s:generate_locate_command(input_query, ...)
   let cmd = ''
   let query = a:input_query
   let limit_num_result = g:ctrlp_locate_max_candidates!=0
@@ -95,26 +64,23 @@ function! s:generate_locate_command(input_query)
 endfunction
 
 function! ctrlp#locate#start()
-  "set key_loop to 0 automatically
-  let s:old_key_loop = get(g:, 'ctrlp_key_loop', 0) "note: default is 0, check github.com/ctrlpvim/ctrlp.vim/autoload/ctrlp.vim
-  let g:ctrlp_key_loop = 0
+  let s:old_matcher = get(g:, 'ctrlp_match_func', 0)
+  let g:ctrlp_match_func = {'match': 'ctrlp#locate#matcher'}
+  let s:old_lazy_update = get(g:, 'ctrlp_lazy_update', 0) 
+  if g:ctrlp_locate_lazy_update == 0
+    echom "[Warn]ctrlp-locate: Do not set g:ctrlp_locate_lazy_update to 0!"
+    let g:ctrlp_locate_lazy_update = 1
+  endif
+  let g:ctrlp_lazy_update = g:ctrlp_locate_lazy_update
   call ctrlp#init(ctrlp#locate#id())
 endfunction
 
 function! ctrlp#locate#init(...)
-  exe 'nnoremap <buffer> ' . g:ctrlp_locate_keymap_trigger_command . ' :call <SID>trigger_locate()<cr>'
-  "call ctrlp#init(ctrlp#locate#id())
-  let input_query = get(s:,'ctrlp_locate_input_query','')
-  if input_query == ""
-    return []
-  endif
-  let cmd = s:generate_locate_command(input_query)
-  if cmd==""
-    echo 'Sorry, I cannot generate any command.'
-    call ctrlp#exit()
-    return
-  endif
-  echomsg 'wait a moment...: [cmd: ' . cmd . ']'
+  return []
+endfunction
+
+function! ctrlp#locate#matcher(items, input, limit, mmode, ispath, crfile, regex)
+  let cmd = s:generate_locate_command(a:input, a:regex)
   let paths = split(s:Process.system(cmd),"\n")
   return paths
 endfunction
@@ -125,8 +91,16 @@ function! ctrlp#locate#accept(mode, str)
 endfunction
 
 function! ctrlp#locate#exit()
-  unlet! s:ctrlp_locate_input_query
-  let g:ctrlp_key_loop = s:old_key_loop
+  call s:revert_settings()
+endfunction
+
+function! s:revert_settings()
+  if type(s:old_matcher) == 0
+    unlet! g:ctrlp_match_func
+  else
+    let g:ctrlp_match_func = s:old_matcher
+  endif
+  let g:ctrlp_lazy_update = s:old_lazy_update
 endfunction
 
 let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)

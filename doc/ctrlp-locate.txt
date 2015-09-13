@@ -31,16 +31,5 @@ g:ctrlp_locate_command_definition		*g:ctrlp_locate_command_definition*
         You can use '{query}' and '{max_candidates}', the former one will be substituted
         by query string, and the latter one by g:ctrlp_locate_max_candidates.
 
-g:ctrlp_locate_keymap_trigger_command		*g:ctrlp_locate_keymap_trigger_command*
-	Map the key sequence for triggering locate command.
-        default: "<c-y>"
-
-==============================================================================
-FAQ							*ctrlp-locate-faq*
-
-- Can not input multi-byte strings!
-	ctrlp-locate set g:ctrlp_key_loop to 0 automatically. you cannot input
-        multi-byte strings.
-
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

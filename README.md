@@ -19,7 +19,7 @@ NeoBundle 'ompugao/ctrlp-locate'
 ````
 >>> test
 ````
-- then, press \<Ctrl-y\>
+- wait a little bit...
 ````
 > /boot/grub/x86_64-efi/setjmp_test.mod
 > /boot/grub/x86_64-efi/pbkdf2_test.mod
@@ -34,14 +34,8 @@ NeoBundle 'ompugao/ctrlp-locate'
 ````
 - Yes! select whatever you want to open!
   
-## Gif
-![](https://raw.githubusercontent.com/wiki/ompugao/ctrlp-locate/imgs/ctrlp-locate.gif)
-
 # Configuration
 - see doc/ctrlp-locate.txt 
-
-# Notice
-- ctrlp-locate set g:ctrlp_key_loop to 0 automatically. you cannot input multi-byte strings.
 
 # LICENSE
 MIT
