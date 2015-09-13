@@ -31,5 +31,14 @@ g:ctrlp_locate_command_definition		*g:ctrlp_locate_command_definition*
         You can use '{query}' and '{max_candidates}', the former one will be substituted
         by query string, and the latter one by g:ctrlp_locate_max_candidates.
 
+g:ctrlp_locate_lazy_update                      *g:ctrlp_locate_lazy_update*
+	Set this to 1 to enable the lazy-update feature for ctrlp-locate.
+        The meaning of this value complies to |'g:ctrlp_lazy_update'|.
+        You cannot set this to 0, which will lead ctrlp drastically slow.
+
+g:ctrlp_locate_min_chars			*g:ctrlp_locate_min_chars*
+	the acceptable number of characters for executing locate command.
+        default is 3.
+
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

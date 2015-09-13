@@ -26,7 +26,7 @@ endif
 
 let g:ctrlp_locate_max_candidates = get(g:, 'ctrlp_locate_max_candidates', 0)
 let g:ctrlp_locate_lazy_update = get(g:, 'ctrlp_locate_lazy_update', 500)
-let g:ctrlp_locate_min_chars = get(g:, 'ctrlp_locate_min_chars', 5)
+let g:ctrlp_locate_min_chars = get(g:, 'ctrlp_locate_min_chars', 3)
 
 " quoted from [unite-locate](https://github.com/ujihisa/unite-locate)
 " If the locate command is linux version, use -e option which means fetching
