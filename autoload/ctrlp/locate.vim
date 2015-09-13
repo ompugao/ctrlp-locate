@@ -94,6 +94,13 @@ function! s:generate_locate_command(input_query)
   return cmd
 endfunction
 
+function! ctrlp#locate#start()
+  "set key_loop to 0 automatically
+  let s:old_key_loop = get(g:, 'ctrlp_key_loop', 0) "note: default is 0, check github.com/ctrlpvim/ctrlp.vim/autoload/ctrlp.vim
+  let g:ctrlp_key_loop = 0
+  call ctrlp#init(ctrlp#locate#id())
+endfunction
+
 function! ctrlp#locate#init(...)
   exe 'nnoremap <buffer> ' . g:ctrlp_locate_keymap_trigger_command . ' :call <SID>trigger_locate()<cr>'
   "call ctrlp#init(ctrlp#locate#id())
@@ -119,6 +126,7 @@ endfunction
 
 function! ctrlp#locate#exit()
   unlet! s:ctrlp_locate_input_query
+  let g:ctrlp_key_loop = s:old_key_loop
 endfunction
 
 let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)

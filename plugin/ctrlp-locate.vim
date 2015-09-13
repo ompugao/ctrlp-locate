@@ -1,1 +1,1 @@
-command! CtrlPLocate call ctrlp#init(ctrlp#locate#id())
+command! CtrlPLocate call ctrlp#locate#start()
