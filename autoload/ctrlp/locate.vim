@@ -67,11 +67,13 @@ function! ctrlp#locate#start()
   let s:old_matcher = get(g:, 'ctrlp_match_func', 0)
   let g:ctrlp_match_func = {'match': 'ctrlp#locate#matcher'}
   let s:old_lazy_update = get(g:, 'ctrlp_lazy_update', 0) 
+  let s:old_key_loop = get(g:, 'ctrlp_key_loop', 0) 
   if g:ctrlp_locate_lazy_update == 0
     echom "[Warn]ctrlp-locate: Do not set g:ctrlp_locate_lazy_update to 0!"
     let g:ctrlp_locate_lazy_update = 1
   endif
   let g:ctrlp_lazy_update = g:ctrlp_locate_lazy_update
+  let g:ctrlp_key_loop = 0
   call ctrlp#init(ctrlp#locate#id())
 endfunction
 
@@ -104,6 +106,7 @@ function! s:revert_settings()
     let g:ctrlp_match_func = s:old_matcher
   endif
   let g:ctrlp_lazy_update = s:old_lazy_update
+  let g:ctrlp_key_loop = s:old_key_loop
 endfunction
 
 let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
