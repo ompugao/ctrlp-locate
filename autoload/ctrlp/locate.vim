@@ -27,6 +27,7 @@ endif
 let g:ctrlp_locate_max_candidates = get(g:, 'ctrlp_locate_max_candidates', 0)
 let g:ctrlp_locate_lazy_update = get(g:, 'ctrlp_locate_lazy_update', 500)
 let g:ctrlp_locate_min_chars = get(g:, 'ctrlp_locate_min_chars', 3)
+let g:ctrlp_locate_reverse_candidates = get(g:, 'ctrlp_locate_reverse_candidates', 0)
 
 " quoted from [unite-locate](https://github.com/ujihisa/unite-locate)
 " If the locate command is linux version, use -e option which means fetching
@@ -87,6 +88,9 @@ function! ctrlp#locate#matcher(items, input, limit, mmode, ispath, crfile, regex
   endif
   let cmd = s:generate_locate_command(a:input, a:regex)
   let paths = split(s:Process.system(cmd),"\n")
+  if g:ctrlp_locate_reverse_candidates == 1
+    let paths = reverse(paths)
+  endif
   return paths
 endfunction
 
