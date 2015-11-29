@@ -14,7 +14,9 @@ let s:locate_var = {
 \ 'accept' : 'ctrlp#locate#accept',
 \ 'lname'  : 'locate',
 \ 'sname'  : 'locate',
-\ 'type'   : 'line',
+\ 'type'   : 'path',
+\ 'nolim'  : 1,
+\ 'opmul'  : 1,
 \ 'sort'   : 0,
 \}
 
