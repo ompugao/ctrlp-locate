@@ -47,14 +47,15 @@ function! s:generate_locate_command(input_query, ...)
 
   if has_key(g:, 'ctrlp_locate_command_definition')
     let cmd = g:ctrlp_locate_command_definition
+  elseif executable('locate')
+    let cmd = 'locate'
+          \ . (s:is_linux()?' -w': '')
+          \ . (limit_num_result? ' -l {max_candidates}' : '')
+          \ . (s:is_linux() ? ' -e -r' : '')
+          \ . ' "{query}"'
+    let query = s:DataString.replace(a:input_query," ", ".*")
   elseif s:Prelude.is_mac()
     let cmd = 'mdfind -name "{query}"' . (limit_num_result? ' | head -n {max_candidates}': '')
-  elseif executable('locate')
-    let cmd = 'locate -w' 
-          \ . (limit_num_result? ' -l {max_candidates}' : '')
-          \ . (s:is_linux() ? ' -e' : '')
-          \ . ' -r "{query}"'
-    let query = s:DataString.replace(a:input_query," ", ".*")
   elseif executable('es')
     let cmd = 'es -i -r'
           \ . (limit_num_result ? ' -n {max_candidates}' : '')
