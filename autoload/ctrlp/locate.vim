@@ -1,4 +1,5 @@
-if exists('g:loaded_ctrlp_locate') && g:loaded_ctrlp_locate
+if ( exists('g:loaded_ctrlp_locate') && g:loaded_ctrlp_locate)
+	\ || v:version < 700 || &cp
   finish
 endif
 let g:loaded_ctrlp_locate = 1
@@ -47,14 +48,15 @@ function! s:generate_locate_command(input_query, ...)
 
   if has_key(g:, 'ctrlp_locate_command_definition')
     let cmd = g:ctrlp_locate_command_definition
-  elseif s:Prelude.is_mac()
-    let cmd = 'mdfind -name "{query}"' . (limit_num_result? ' | head -n {max_candidates}': '')
   elseif executable('locate')
-    let cmd = 'locate -w' 
+    let cmd = 'locate'
+          \ . (s:is_linux()?' -w': '')
           \ . (limit_num_result? ' -l {max_candidates}' : '')
-          \ . (s:is_linux() ? ' -e' : '')
-          \ . ' -r "{query}"'
+          \ . (s:is_linux() ? ' -e -r' : '')
+          \ . ' "{query}"'
     let query = s:DataString.replace(a:input_query," ", ".*")
+  elseif s:Prelude.is_mac()
+    let cmd = 'mdfind -onlyin / -name "{query}"' . (limit_num_result? ' | head -n {max_candidates}': '')
   elseif executable('es')
     let cmd = 'es -i -r'
           \ . (limit_num_result ? ' -n {max_candidates}' : '')
@@ -69,8 +71,8 @@ endfunction
 function! ctrlp#locate#start()
   let s:old_matcher = get(g:, 'ctrlp_match_func', 0)
   let g:ctrlp_match_func = {'match': 'ctrlp#locate#matcher'}
-  let s:old_lazy_update = get(g:, 'ctrlp_lazy_update', 0) 
-  let s:old_key_loop = get(g:, 'ctrlp_key_loop', 0) 
+  let s:old_lazy_update = get(g:, 'ctrlp_lazy_update', 0)
+  let s:old_key_loop = get(g:, 'ctrlp_key_loop', 0)
   if g:ctrlp_locate_lazy_update == 0
     echom "[Warn]ctrlp-locate: Do not set g:ctrlp_locate_lazy_update to 0!"
     let g:ctrlp_locate_lazy_update = 1
@@ -106,6 +108,9 @@ function! ctrlp#locate#exit()
 endfunction
 
 function! s:revert_settings()
+  if ! has_key(s:, 'old_matcher')
+    return
+  endif
   if type(s:old_matcher) == 0
     unlet! g:ctrlp_match_func
   else
